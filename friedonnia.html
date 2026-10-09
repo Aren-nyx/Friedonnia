@@ -1,0 +1,2711 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Friedonnia — Le Royaume des Dragons</title>
+  <meta name="description" content="Explore Friedonnia, un royaume fantasy rempli de dragons, de magie, de runes et de mini-jeux.">
+  <meta name="theme-color" content="#101629">
+
+  <style>
+    /* =========================================
+       FRIEDONNIA — STYLE GENERAL
+    ========================================= */
+
+    :root {
+      --background: #0c1120;
+      --panel: #151e32;
+      --panel-light: #1d2942;
+      --gold: #e8bd69;
+      --gold-light: #ffe2a0;
+      --blue: #66c9ff;
+      --purple: #a991ff;
+      --text: #f1f3fa;
+      --muted: #aeb8ce;
+      --success: #70e1ad;
+      --danger: #ff8585;
+      --border: rgba(232, 189, 105, 0.25);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top, #202c4b 0%, transparent 48%),
+        var(--background);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    a {
+      color: var(--gold-light);
+    }
+
+    .container {
+      width: min(1160px, 92%);
+      margin: auto;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .gold {
+      color: var(--gold);
+    }
+
+    .small {
+      font-size: 0.88rem;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .section-heading {
+      margin: 0 0 8px;
+      font-family: Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      line-height: 1.2;
+    }
+
+    .section-intro {
+      max-width: 700px;
+      margin: 0 0 28px;
+      color: var(--muted);
+    }
+
+    /* =========================================
+       BARRE DE NAVIGATION
+    ========================================= */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12, 17, 32, 0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-family: Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      font-size: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 9px 13px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      transition: 0.2s;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      color: var(--gold-light);
+      background: rgba(232, 189, 105, 0.09);
+      border-color: var(--border);
+    }
+
+    /* =========================================
+       BOUTONS
+    ========================================= */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 17px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-light);
+      color: var(--text);
+      font-weight: 700;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #293959;
+    }
+
+    .btn-primary {
+      border-color: #e8bd69;
+      background: linear-gradient(135deg, #e8bd69, #bd873c);
+      color: #171522;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ffe2a0, #e8bd69);
+    }
+
+    .btn-danger {
+      border-color: rgba(255, 133, 133, 0.4);
+      color: #ffaaaa;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =========================================
+       ACCUEIL ET BANNIERE
+    ========================================= */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 490px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(90deg, rgba(8, 13, 28, 0.96), rgba(8, 13, 28, 0.6)),
+        url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1800&q=85")
+        center 48% / cover,
+        #17243c;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 75% 45%, rgba(232, 189, 105, 0.16), transparent 28%),
+        linear-gradient(0deg, var(--background), transparent 24%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      padding: 65px 0 85px;
+    }
+
+    .hero h1 {
+      margin: 12px 0;
+      font-family: Georgia, serif;
+      font-size: clamp(3rem, 8vw, 5.8rem);
+      line-height: 1;
+      color: var(--gold-light);
+      text-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: #d5dced;
+      font-size: 1.1rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .hero-symbol {
+      margin-top: 22px;
+      color: var(--gold);
+      letter-spacing: 7px;
+    }
+
+    /* =========================================
+       PAGES
+    ========================================= */
+
+    .page {
+      display: none;
+      padding: 45px 0 65px;
+      animation: pageIn 0.35s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================================
+       CARTES ET GRILLES
+    ========================================= */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, var(--panel), #111829);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-content {
+      padding: 22px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-family: Georgia, serif;
+      font-size: 1.3rem;
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .card-art {
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(232, 189, 105, 0.22), transparent 36%),
+        linear-gradient(135deg, #253959, #111829);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-art span {
+      font-size: 5rem;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--gold);
+      background: rgba(232, 189, 105, 0.07);
+      font-size: 0.76rem;
+    }
+
+    .feature-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      flex: 0 0 50px;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel-light);
+      font-size: 1.7rem;
+    }
+
+    /* =========================================
+       STATS ET PANNEAUX
+    ========================================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .stat {
+      padding: 18px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(21, 30, 50, 0.85);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--gold);
+      font-size: 1.8rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .panel {
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    .section-gap {
+      margin-top: 42px;
+    }
+
+    /* =========================================
+       MINI-JEUX
+    ========================================= */
+
+    .game-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .game-card .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    .game-card .btn {
+      margin-top: auto;
+    }
+
+    .game-area {
+      margin-top: 25px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, #18243b, #101727);
+    }
+
+    .game-area h3 {
+      margin-top: 0;
+      color: var(--gold-light);
+    }
+
+    .game-result {
+      min-height: 32px;
+      margin: 15px 0;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .game-input {
+      width: 100%;
+      max-width: 330px;
+      padding: 12px 14px;
+      border: 1px solid #435371;
+      border-radius: 10px;
+      background: #0b1120;
+      color: white;
+    }
+
+    .game-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .game-symbol {
+      min-height: 90px;
+      display: grid;
+      place-items: center;
+      color: var(--gold-light);
+      font-size: clamp(2rem, 7vw, 3.7rem);
+      letter-spacing: 8px;
+    }
+
+    /* Jeu de runes */
+
+    #runeCanvas {
+      width: 100%;
+      max-width: 500px;
+      height: 260px;
+      display: block;
+      border: 1px solid #465775;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at center, rgba(63, 102, 151, 0.18), transparent 65%),
+        #0a1020;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .rune-guide {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Mémoire */
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 90px));
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .memory-tile {
+      min-height: 75px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #263655;
+      color: white;
+      font-size: 1.8rem;
+    }
+
+    .memory-tile:hover {
+      background: #344a70;
+    }
+
+    .memory-tile:disabled {
+      opacity: 1;
+    }
+
+    /* Coffres */
+
+    .chest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 110px));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .chest-btn {
+      min-height: 95px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(145deg, #33445f, #18243b);
+      font-size: 2.5rem;
+    }
+
+    /* =========================================
+       CLASSEMENT ET TABLEAU
+    ========================================= */
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--gold);
+      background: #1b2740;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    /* =========================================
+       PROFIL ET FORMULAIRES
+    ========================================= */
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 22px;
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      background: radial-gradient(circle, #3a4b70, #12192b);
+      font-size: 3.8rem;
+    }
+
+    .profile-summary {
+      text-align: center;
+    }
+
+    .form-row {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+
+    .form-row label {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .form-row input,
+    .form-row select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #435371;
+      border-radius: 10px;
+      background: #0b1120;
+      color: white;
+    }
+
+    .form-row option {
+      background: #101629;
+    }
+
+    .progress-track {
+      overflow: hidden;
+      height: 10px;
+      border-radius: 999px;
+      background: #303b52;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #66c9ff, #a991ff);
+      transition: width 0.4s;
+    }
+
+    /* =========================================
+       NOTIFICATIONS
+    ========================================= */
+
+    #toast {
+      position: fixed;
+      z-index: 200;
+      right: 20px;
+      bottom: 20px;
+      max-width: min(380px, calc(100vw - 40px));
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #202d47;
+      color: white;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: 0.25s;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================
+       PIED DE PAGE
+    ========================================= */
+
+    footer {
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      background: #090e19;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .footer-symbol {
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-size: 1.6rem;
+    }
+
+    /* =========================================
+       ADAPTATION AUX ECRANS
+    ========================================= */
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        padding: 12px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid,
+      .grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        min-height: 430px;
+      }
+
+      .hero-content {
+        padding: 50px 0 70px;
+      }
+
+      .nav-links {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .nav-btn {
+        padding: 8px 5px;
+        font-size: 0.85rem;
+      }
+
+      .brand {
+        font-size: 1.25rem;
+      }
+
+      .game-area,
+      .panel {
+        padding: 17px;
+      }
+
+      #runeCanvas {
+        height: 220px;
+      }
+
+      .memory-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .memory-tile {
+        min-height: 58px;
+      }
+
+      .chest-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BARRE DE NAVIGATION -->
+
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">
+        <span class="brand-icon">🐉</span>
+        <span>FRIEDONNIA</span>
+      </div>
+
+      <nav class="nav-links" aria-label="Navigation principale">
+        <button class="nav-btn active" data-page="accueil">Accueil</button>
+        <button class="nav-btn" data-page="univers">Univers</button>
+        <button class="nav-btn" data-page="jeux">Mini-jeux</button>
+        <button class="nav-btn" data-page="classement">Classement</button>
+        <button class="nav-btn" data-page="profil">Mon profil</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =====================================
+         PAGE ACCUEIL
+    ====================================== -->
+
+    <section class="page active" id="accueil">
+      <div class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <div class="eyebrow">Chroniques d'un royaume oublié</div>
+            <h1>FRIEDONNIA</h1>
+
+            <p>
+              Au-delà des montagnes anciennes, les dragons veillent sur
+              des royaumes remplis de magie. Apprends les runes oubliées,
+              relève des défis et forge ta propre légende.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn btn-primary" data-go="jeux">
+                ⚔ Commencer l'aventure
+              </button>
+              <button class="btn" data-go="univers">
+                📜 Découvrir le royaume
+              </button>
+            </div>
+
+            <div class="hero-symbol">✦ ━━━━━━━━━ ✧ ━━━━━━━━━ ✦</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="stats">
+          <div class="stat">
+            <strong id="statGames">0</strong>
+            <span>Parties jouées</span>
+          </div>
+          <div class="stat">
+            <strong id="statPoints">0</strong>
+            <span>Points gagnés</span>
+          </div>
+          <div class="stat">
+            <strong id="statRunes">0</strong>
+            <span>Runes maîtrisées</span>
+          </div>
+          <div class="stat">
+            <strong id="statRank">Novice</strong>
+            <span>Rang actuel</span>
+          </div>
+        </div>
+
+        <div class="eyebrow">Ton aventure commence ici</div>
+        <h2 class="section-heading">Que souhaites-tu explorer ?</h2>
+        <p class="section-intro">
+          Choisis ta voie, voyage dans les terres de Friedonnia et découvre
+          les secrets cachés derrière les légendes.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-art"><span>🐲</span></div>
+            <div class="card-content">
+              <span class="tag">Créatures légendaires</span>
+              <h3>Le bestiaire</h3>
+              <p>
+                Découvre les dragons, les gardiens anciens et les créatures
+                qui peuplent les terres du royaume.
+              </p>
+              <button class="btn" data-go="univers">Explorer →</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>🔮</span></div>
+            <div class="card-content">
+              <span class="tag">Arts mystiques</span>
+              <h3>Les arcanes</h3>
+              <p>
+                Teste tes connaissances, dessine des runes magiques et
+                apprends à canaliser ton énergie.
+              </p>
+              <button class="btn" data-go="jeux">Pratiquer →</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>🏆</span></div>
+            <div class="card-content">
+              <span class="tag">Défis du royaume</span>
+              <h3>Le panthéon</h3>
+              <p>
+                Accumule des points grâce aux mini-jeux et compare tes
+                résultats avec tes meilleurs scores enregistrés.
+              </p>
+              <button class="btn" data-go="classement">Voir les scores →</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-gap panel">
+          <div class="feature-row">
+            <div class="feature-icon">💾</div>
+            <div>
+              <h3>Ta progression t'appartient</h3>
+              <p class="muted">
+                Tes points, tes résultats et ton profil sont sauvegardés
+                dans le navigateur de ton appareil. Tu peux exporter ta
+                sauvegarde depuis la page Mon profil pour la conserver.
+              </p>
+              <button class="btn" data-go="profil">Gérer ma sauvegarde</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================
+         PAGE UNIVERS
+    ====================================== -->
+
+    <section class="page" id="univers">
+      <div class="container">
+        <div class="eyebrow">Chroniques et légendes</div>
+        <h2 class="section-heading">L'univers de Friedonnia</h2>
+        <p class="section-intro">
+          Un monde ancien où les dragons sont les gardiens de secrets oubliés,
+          où les runes renferment un pouvoir mystérieux et où chaque territoire
+          possède ses propres légendes.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-art"><span>🏰</span></div>
+            <div class="card-content">
+              <h3>Les Royaumes Humains</h3>
+              <p>
+                Des cités fortifiées, des chevaliers et des guildes d'aventuriers.
+                Les humains recherchent autant la connaissance que la gloire.
+              </p>
+              <span class="tag">Terres civilisées</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>🌋</span></div>
+            <div class="card-content">
+              <h3>Draymoria</h3>
+              <p>
+                Le Royaume des Cieux Ardents : des îles flottantes, des volcans
+                endormis et des cavernes cristallines habitées par les dragons.
+              </p>
+              <span class="tag">Domaine draconique</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>🌲</span></div>
+            <div class="card-content">
+              <h3>La Forêt des Murmures</h3>
+              <p>
+                Une forêt ancienne où les arbres semblent se souvenir du passé.
+                Certains voyageurs affirment y avoir entendu des voix.
+              </p>
+              <span class="tag">Territoire mystérieux</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>🌑</span></div>
+            <div class="card-content">
+              <h3>Les Terres Oubliées</h3>
+              <p>
+                Des ruines enfouies, des temples abandonnés et des passages
+                dont les cartes ont perdu la trace.
+              </p>
+              <span class="tag">Exploration</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>📚</span></div>
+            <div class="card-content">
+              <h3>La Bibliothèque des Anciens</h3>
+              <p>
+                Les archives racontent l'histoire des premiers mages et
+                des pactes qui auraient uni humains et dragons.
+              </p>
+              <span class="tag">Savoir interdit</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art"><span>💎</span></div>
+            <div class="card-content">
+              <h3>Les Mines de Cristal</h3>
+              <p>
+                Des galeries scintillantes où se trouvent des pierres capables
+                de conserver une faible trace d'énergie magique.
+              </p>
+              <span class="tag">Richesses anciennes</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-gap">
+          <h2 class="section-heading">Les cinq arts mystiques</h2>
+          <p class="section-intro">
+            Dans les récits de Friedonnia, chaque art possède une nature et
+            des usages différents.
+          </p>
+
+          <div class="grid">
+            <article class="card">
+              <div class="card-content">
+                <h3>🔥 Pyromancie</h3>
+                <p>La chaleur, les flammes et la puissance destructrice.</p>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-content">
+                <h3>❄ Cryomancie</h3>
+                <p>Le froid, la glace et la maîtrise des mouvements.</p>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-content">
+                <h3>⚡ Électromancie</h3>
+                <p>L'énergie, la vitesse et les décharges fulgurantes.</p>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-content">
+                <h3>🌪 Aéromancie</h3>
+                <p>Les vents, les courants et la mobilité.</p>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-content">
+                <h3>🌿 Sylvomancie</h3>
+                <p>La nature, la croissance et les forces vivantes.</p>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-content">
+                <h3>✨ Arcanes</h3>
+                <p>Les runes, les enchantements et les mystères anciens.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================
+         PAGE MINI-JEUX
+    ====================================== -->
+
+    <section class="page" id="jeux">
+      <div class="container">
+        <div class="eyebrow">Épreuves des aventuriers</div>
+        <h2 class="section-heading">Les mini-jeux</h2>
+        <p class="section-intro">
+          Entraîne-toi, teste tes réflexes et gagne des points.
+          Chaque jeu possède ses propres règles et récompenses.
+        </p>
+
+        <div class="grid">
+          <article class="card game-card">
+            <div class="card-art"><span>🐉</span></div>
+            <div class="card-content">
+              <h3>Le nombre du dragon</h3>
+              <p>Devine le nombre secret choisi par le dragon en dix essais maximum.</p>
+              <span class="tag">Logique · 10 à 50 points</span>
+              <br>
+              <button class="btn btn-primary" data-game="dragon">Jouer</button>
+            </div>
+          </article>
+
+          <article class="card game-card">
+            <div class="card-art"><span>ᚱ</span></div>
+            <div class="card-content">
+              <h3>Le cercle des runes</h3>
+              <p>Reproduis la rune magique en traçant ses traits sur le tableau.</p>
+              <span class="tag">Précision · 50 points</span>
+              <br>
+              <button class="btn btn-primary" data-game="runes">Jouer</button>
+            </div>
+          </article>
+
+          <article class="card game-card">
+            <div class="card-art"><span>🎲</span></div>
+            <div class="card-content">
+              <h3>Les dés du destin</h3>
+              <p>Lance deux dés. Un total élevé peut t'offrir une belle récompense.</p>
+              <span class="tag">Chance · 5 à 40 points</span>
+              <br>
+              <button class="btn btn-primary" data-game="des">Jouer</button>
+            </div>
+          </article>
+
+          <article class="card game-card">
+            <div class="card-art"><span>🧠</span></div>
+            <div class="card-content">
+              <h3>La mémoire du mage</h3>
+              <p>Mémorise une suite de symboles puis reproduis-la sans erreur.</p>
+              <span class="tag">Mémoire · jusqu'à 100 points</span>
+              <br>
+              <button class="btn btn-primary" data-game="memoire">Jouer</button>
+            </div>
+          </article>
+
+          <article class="card game-card">
+            <div class="card-art"><span>⚡</span></div>
+            <div class="card-content">
+              <h3>L'éclair du sorcier</h3>
+              <p>Attends le signal, puis clique aussi rapidement que possible.</p>
+              <span class="tag">Réflexes · jusqu'à 100 points</span>
+              <br>
+              <button class="btn btn-primary" data-game="reflexes">Jouer</button>
+            </div>
+          </article>
+
+          <article class="card game-card">
+            <div class="card-art"><span>🗝️</span></div>
+            <div class="card-content">
+              <h3>Les coffres perdus</h3>
+              <p>Choisis un coffre parmi trois. L'un d'eux cache un trésor.</p>
+              <span class="tag">Chance · jusqu'à 30 points</span>
+              <br>
+              <button class="btn btn-primary" data-game="coffres">Jouer</button>
+            </div>
+          </article>
+        </div>
+
+        <!-- JEU 1 -->
+
+        <div class="game-area" id="game-dragon" hidden>
+          <h3>🐉 Le nombre du dragon</h3>
+          <p>
+            Le dragon a choisi un nombre entre 1 et 100.
+            Tu disposes de dix essais.
+          </p>
+
+          <div class="game-actions">
+            <input class="game-input" id="dragonGuess" type="number"
+                   min="1" max="100" placeholder="Ton nombre (1 à 100)">
+            <button class="btn btn-primary" id="dragonTry">Deviner</button>
+            <button class="btn" id="dragonRestart">Nouvelle partie</button>
+          </div>
+
+          <p class="game-result" id="dragonResult" aria-live="polite">
+            Le dragon attend ta réponse...
+          </p>
+          <p class="muted small" id="dragonAttempts">Essais restants : 10</p>
+        </div>
+
+        <!-- JEU 2 -->
+
+        <div class="game-area" id="game-runes" hidden>
+          <h3>ᚱ Le cercle des runes</h3>
+          <p>
+            Observe la rune affichée, puis reproduis-la en un seul tracé.
+            Tu peux dessiner avec la souris ou avec ton doigt.
+          </p>
+
+          <div class="panel" style="margin-bottom:18px;text-align:center">
+            <div class="eyebrow">Rune à reproduire</div>
+            <div class="game-symbol" id="runeTarget">ᚱ</div>
+            <p class="rune-guide" id="runeDescription">
+              Trace la forme en suivant les lignes principales.
+            </p>
+          </div>
+
+          <canvas id="runeCanvas" width="500" height="260"
+                  aria-label="Zone de dessin de la rune"></canvas>
+
+          <div class="game-actions">
+            <button class="btn" id="runeClear">Effacer</button>
+            <button class="btn btn-primary" id="runeCheck">Vérifier la rune</button>
+            <button class="btn" id="runeNext">Nouvelle rune</button>
+          </div>
+
+          <p class="game-result" id="runeResult" aria-live="polite">
+            À toi de jouer, apprenti mage.
+          </p>
+          <p class="muted small">
+            Le jeu compare la présence et la position générale des traits.
+            Le résultat reste une approximation du dessin.
+          </p>
+        </div>
+
+        <!-- JEU 3 -->
+
+        <div class="game-area" id="game-des" hidden>
+          <h3>🎲 Les dés du destin</h3>
+          <p>Lance deux dés à six faces et découvre ton résultat.</p>
+
+          <div class="game-symbol" id="diceDisplay">⚄　⚁</div>
+          <p class="game-result" id="diceResult" aria-live="polite">
+            Le destin attend ton lancer.
+          </p>
+
+          <div class="game-actions">
+            <button class="btn btn-primary" id="diceRoll">Lancer les dés</button>
+          </div>
+        </div>
+
+        <!-- JEU 4 -->
+
+        <div class="game-area" id="game-memoire" hidden>
+          <h3>🧠 La mémoire du mage</h3>
+          <p id="memoryInstructions">
+            Clique sur Commencer. Observe la séquence, puis reproduis-la.
+          </p>
+
+          <div class="game-symbol" id="memoryStatus">✦ ✧ ✦</div>
+
+          <div class="memory-grid" id="memoryGrid">
+            <button class="memory-tile" data-index="0" aria-label="Symbole 1">?</button>
+            <button class="memory-tile" data-index="1" aria-label="Symbole 2">?</button>
+            <button class="memory-tile" data-index="2" aria-label="Symbole 3">?</button>
+            <button class="memory-tile" data-index="3" aria-label="Symbole 4">?</button>
+            <button class="memory-tile" data-index="4" aria-label="Symbole 5">?</button>
+            <button class="memory-tile" data-index="5" aria-label="Symbole 6">?</button>
+            <button class="memory-tile" data-index="6" aria-label="Symbole 7">?</button>
+            <button class="memory-tile" data-index="7" aria-label="Symbole 8">?</button>
+          </div>
+
+          <div class="game-actions">
+            <button class="btn btn-primary" id="memoryStart">Commencer</button>
+          </div>
+
+          <p class="game-result" id="memoryResult" aria-live="polite"></p>
+        </div>
+
+        <!-- JEU 5 -->
+
+        <div class="game-area" id="game-reflexes" hidden>
+          <h3>⚡ L'éclair du sorcier</h3>
+          <p>
+            Clique sur le bouton pour te préparer. Quand le signal apparaît,
+            clique le plus vite possible. Attention aux faux départs !
+          </p>
+
+          <div class="game-symbol" id="reactionDisplay">⚡</div>
+
+          <div class="game-actions">
+            <button class="btn btn-primary" id="reactionStart">
+              Se préparer
+            </button>
+            <button class="btn" id="reactionHit" disabled>
+              J'attends le signal...
+            </button>
+          </div>
+
+          <p class="game-result" id="reactionResult" aria-live="polite">
+            Es-tu prêt ?
+          </p>
+        </div>
+
+        <!-- JEU 6 -->
+
+        <div class="game-area" id="game-coffres" hidden>
+          <h3>🗝️ Les coffres perdus</h3>
+          <p>
+            Trois coffres t'attendent. L'un contient un trésor.
+            Tu as trois essais pour le trouver.
+          </p>
+
+          <div class="chest-grid">
+            <button class="chest-btn" data-chest="0" aria-label="Coffre 1">📦</button>
+            <button class="chest-btn" data-chest="1" aria-label="Coffre 2">📦</button>
+            <button class="chest-btn" data-chest="2" aria-label="Coffre 3">📦</button>
+          </div>
+
+          <p class="game-result" id="chestResult" aria-live="polite">
+            Choisis ton premier coffre.
+          </p>
+
+          <div class="game-actions">
+            <button class="btn" id="chestRestart">Recommencer</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================
+         PAGE CLASSEMENT
+    ====================================== -->
+
+    <section class="page" id="classement">
+      <div class="container">
+        <div class="eyebrow">Hall des aventuriers</div>
+        <h2 class="section-heading">Le classement</h2>
+        <p class="section-intro">
+          Retrouve les meilleurs scores enregistrés sur cet appareil.
+          Tu peux changer ton pseudo dans Mon profil.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong id="leaderPlayers">0</strong>
+            <span>Profils enregistrés</span>
+          </div>
+          <div class="stat">
+            <strong id="leaderGames">0</strong>
+            <span>Parties terminées</span>
+          </div>
+          <div class="stat">
+            <strong id="leaderBest">0</strong>
+            <span>Meilleur score</span>
+          </div>
+          <div class="stat">
+            <strong id="leaderRank">—</strong>
+            <span>Ton rang local</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div style="display:flex;gap:15px;justify-content:space-between;align-items:center;flex-wrap:wrap">
+            <div>
+              <h3>🏆 Les champions de Friedonnia</h3>
+              <p class="muted small">
+                Les scores sont classés du plus élevé au plus faible.
+              </p>
+            </div>
+            <button class="btn" id="refreshLeaderboard">Actualiser</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rang</th>
+                  <th>Aventurier</th>
+                  <th>Points</th>
+                  <th>Parties</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardBody">
+                <tr>
+                  <td colspan="4">Aucun score pour le moment.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="muted small" style="margin-bottom:0">
+            Important : ce classement est local. Il ne rassemble pas les
+            joueurs d'Internet. Pour un classement partagé entre plusieurs
+            personnes, il faudra connecter le site à une base de données.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================
+         PAGE PROFIL
+    ====================================== -->
+
+    <section class="page" id="profil">
+      <div class="container">
+        <div class="eyebrow">Identité de l'aventurier</div>
+        <h2 class="section-heading">Mon profil</h2>
+        <p class="section-intro">
+          Personnalise ton identité, consulte tes statistiques et sauvegarde
+          ta progression.
+        </p>
+
+        <div class="profile-layout">
+          <aside class="panel profile-summary">
+            <div class="profile-avatar" id="profileAvatar">🐉</div>
+            <h3 id="profileName">Aventurier</h3>
+            <span class="tag" id="profileRank">Novice</span>
+
+            <div class="section-gap">
+              <div class="muted small">Points accumulés</div>
+              <div class="gold" style="font-size:2rem;font-weight:bold" id="profilePoints">0</div>
+            </div>
+
+            <div style="text-align:left;margin-top:24px">
+              <div style="display:flex;justify-content:space-between;gap:10px">
+                <span class="muted small">Progression vers le rang suivant</span>
+                <strong class="small" id="profileProgressText">0 %</strong>
+              </div>
+              <div class="progress-track" style="margin-top:8px">
+                <div class="progress-fill" id="profileProgress"></div>
+              </div>
+            </div>
+          </aside>
+
+          <div class="panel">
+            <h3>⚙ Personnaliser mon profil</h3>
+
+            <form id="profileForm">
+              <div class="form-row">
+                <label for="profileNameInput">Nom d'aventurier</label>
+                <input id="profileNameInput" maxlength="20"
+                       placeholder="Ton pseudo" required>
+              </div>
+
+              <div class="form-row">
+                <label for="profileAvatarInput">Avatar</label>
+                <select id="profileAvatarInput">
+                  <option value="🐉">🐉 Dragon</option>
+                  <option value="🧙">🧙 Mage</option>
+                  <option value="🗡️">🗡️ Assassin</option>
+                  <option value="🏹">🏹 Archer</option>
+                  <option value="🛡️">🛡️ Chevalier</option>
+                  <option value="🦊">🦊 Esprit rusé</option>
+                  <option value="🐺">🐺 Loup</option>
+                  <option value="🦅">🦅 Aigle</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="profileClassInput">Classe favorite</label>
+                <select id="profileClassInput">
+                  <option value="Mage">Mage</option>
+                  <option value="Guerrier">Guerrier</option>
+                  <option value="Assassin">Assassin</option>
+                  <option value="Archer">Archer</option>
+                  <option value="Alchimiste">Alchimiste</option>
+                  <option value="Chevalier-dragon">Chevalier-dragon</option>
+                </select>
+              </div>
+
+              <button class="btn btn-primary" type="submit">
+                Enregistrer le profil
+              </button>
+            </form>
+
+            <hr style="border:0;border-top:1px solid var(--border);margin:28px 0">
+
+            <h3>💾 Sauvegarde des données</h3>
+            <p class="muted">
+              Exporte tes données dans un fichier JSON pour les conserver,
+              ou importe une sauvegarde précédente.
+            </p>
+
+            <div class="game-actions">
+              <button class="btn btn-primary" id="exportSave">
+                Exporter ma sauvegarde
+              </button>
+
+              <button class="btn" id="importSaveButton">
+                Importer une sauvegarde
+              </button>
+
+              <input type="file" id="importSaveFile"
+                     accept=".json,application/json" hidden>
+            </div>
+
+            <p class="muted small">
+              N'importe que des fichiers de sauvegarde Friedonnia que tu
+              souhaites restaurer. L'import remplace la progression actuelle.
+            </p>
+
+            <hr style="border:0;border-top:1px solid var(--border);margin:28px 0">
+
+            <h3>🧹 Réinitialisation</h3>
+            <p class="muted">
+              Cette action efface le profil et les scores enregistrés
+              sur ce navigateur.
+            </p>
+
+            <button class="btn btn-danger" id="resetData">
+              Réinitialiser mes données
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIED DE PAGE -->
+
+  <footer>
+    <div class="container">
+      <div class="footer-symbol">✦ 🐉 ✦</div>
+      <strong>FRIEDONNIA</strong>
+      <p class="small">
+        Un monde de dragons, de magie et de légendes.
+      </p>
+      <p class="small">
+        Site indépendant créé pour le plaisir du jeu.
+      </p>
+    </div>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    /* =========================================
+       FRIEDONNIA — DONNEES ET SAUVEGARDE
+    ========================================= */
+
+    const STORAGE_KEY = "friedonnia_save_v1";
+
+    const defaultData = {
+      profile: {
+        name: "Aventurier",
+        avatar: "🐉",
+        className: "Mage"
+      },
+      totalPoints: 0,
+      gamesPlayed: 0,
+      runesMastered: 0,
+      bestScores: {},
+      leaderboard: []
+    };
+
+    let data = loadData();
+
+    function cloneDefaultData() {
+      return JSON.parse(JSON.stringify(defaultData));
+    }
+
+    function loadData() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+          return cloneDefaultData();
+        }
+
+        const parsed = JSON.parse(saved);
+        const base = cloneDefaultData();
+
+        if (parsed && typeof parsed === "object") {
+          base.profile = {
+            ...base.profile,
+            ...(parsed.profile || {})
+          };
+
+          base.totalPoints = Math.max(0, Number(parsed.totalPoints) || 0);
+          base.gamesPlayed = Math.max(0, Number(parsed.gamesPlayed) || 0);
+          base.runesMastered = Math.max(0, Number(parsed.runesMastered) || 0);
+
+          if (parsed.bestScores && typeof parsed.bestScores === "object") {
+            base.bestScores = parsed.bestScores;
+          }
+
+          if (Array.isArray(parsed.leaderboard)) {
+            base.leaderboard = parsed.leaderboard
+              .filter(entry =>
+                entry &&
+                typeof entry.name === "string" &&
+                Number.isFinite(Number(entry.points))
+              )
+              .map(entry => ({
+                name: entry.name.slice(0, 20),
+                points: Math.max(0, Number(entry.points) || 0),
+                games: Math.max(0, Number(entry.games) || 0)
+              }));
+          }
+        }
+
+        return base;
+      } catch (error) {
+        return cloneDefaultData();
+      }
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (error) {
+        notify("Impossible d'enregistrer les données dans ce navigateur.");
+      }
+    }
+
+    function safeText(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[character]);
+    }
+
+    function notify(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(notify.timer);
+      notify.timer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2800);
+    }
+
+    function getRank(points = data.totalPoints) {
+      if (points >= 1000) return "Légende";
+      if (points >= 600) return "Maître";
+      if (points >= 300) return "Expert";
+      if (points >= 120) return "Adepte";
+      if (points >= 40) return "Apprenti";
+      return "Novice";
+    }
+
+    function getProgress(points = data.totalPoints) {
+      const levels = [0, 40, 120, 300, 600, 1000];
+
+      if (points >= 1000) return 100;
+
+      for (let i = 0; i < levels.length - 1; i++) {
+        if (points >= levels[i] && points < levels[i + 1]) {
+          return Math.round(
+            ((points - levels[i]) / (levels[i + 1] - levels[i])) * 100
+          );
+        }
+      }
+
+      return 0;
+    }
+
+    function refreshUI() {
+      document.getElementById("statGames").textContent = data.gamesPlayed;
+      document.getElementById("statPoints").textContent = data.totalPoints;
+      document.getElementById("statRunes").textContent = data.runesMastered;
+      document.getElementById("statRank").textContent = getRank();
+
+      document.getElementById("profileName").textContent = data.profile.name;
+      document.getElementById("profileAvatar").textContent = data.profile.avatar;
+      document.getElementById("profileRank").textContent = getRank();
+      document.getElementById("profilePoints").textContent = data.totalPoints;
+      document.getElementById("profileProgressText").textContent =
+        getProgress() + " %";
+      document.getElementById("profileProgress").style.width =
+        getProgress() + "%";
+
+      document.getElementById("profileNameInput").value = data.profile.name;
+      document.getElementById("profileAvatarInput").value = data.profile.avatar;
+      document.getElementById("profileClassInput").value = data.profile.className;
+
+      refreshLeaderboard();
+    }
+
+    function refreshLeaderboard() {
+      const body = document.getElementById("leaderboardBody");
+
+      const sorted = [...data.leaderboard].sort((a, b) => b.points - a.points);
+
+      document.getElementById("leaderPlayers").textContent = sorted.length;
+      document.getElementById("leaderGames").textContent = data.gamesPlayed;
+      document.getElementById("leaderBest").textContent =
+        sorted.length ? sorted[0].points : 0;
+
+      const myRank = sorted.findIndex(
+        entry => entry.name === data.profile.name
+      );
+
+      document.getElementById("leaderRank").textContent =
+        myRank >= 0 ? "#" + (myRank + 1) : "—";
+
+      if (!sorted.length) {
+        body.innerHTML =
+          '<tr><td colspan="4">Aucun score pour le moment. Lance un mini-jeu pour apparaître ici !</td></tr>';
+        return;
+      }
+
+      body.innerHTML = sorted.slice(0, 50).map((entry, index) => {
+        const medal = index === 0 ? "🥇" :
+                      index === 1 ? "🥈" :
+                      index === 2 ? "🥉" : "#" + (index + 1);
+
+        return `
+          <tr>
+            <td>${medal}</td>
+            <td>${safeText(entry.name)}</td>
+            <td>${entry.points}</td>
+            <td>${entry.games}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function finishGame(gameName, points) {
+      points = Math.max(0, Math.floor(Number(points) || 0));
+
+      data.gamesPlayed++;
+      data.totalPoints += points;
+
+      data.bestScores[gameName] = Math.max(
+        Number(data.bestScores[gameName]) || 0,
+        points
+      );
+
+      const currentName = data.profile.name;
+      let player = data.leaderboard.find(entry => entry.name === currentName);
+
+      if (!player) {
+        player = {
+          name: currentName,
+          points: 0,
+          games: 0
+        };
+        data.leaderboard.push(player);
+      }
+
+      player.points += points;
+      player.games++;
+
+      saveData();
+      refreshUI();
+
+      notify("+" + points + " points ! " + getRank() + " • " + gameName);
+    }
+
+    /* =========================================
+       NAVIGATION ENTRE LES PAGES
+    ========================================= */
+
+    function showPage(pageName) {
+      const target = document.getElementById(pageName);
+
+      if (!target || !target.classList.contains("page")) {
+        return;
+      }
+
+      document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === pageName);
+      });
+
+      document.querySelectorAll(".nav-btn").forEach(button => {
+        const isActive = button.dataset.page === pageName;
+        button.classList.toggle("active", isActive);
+
+        if (isActive) {
+          button.setAttribute("aria-current", "page");
+        } else {
+          button.removeAttribute("aria-current");
+        }
+      });
+
+      document.querySelectorAll(".game-area").forEach(area => {
+        area.hidden = true;
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll("[data-page]").forEach(button => {
+      button.addEventListener("click", () => {
+        showPage(button.dataset.page);
+      });
+    });
+
+    document.querySelectorAll("[data-go]").forEach(button => {
+      button.addEventListener("click", () => {
+        showPage(button.dataset.go);
+      });
+    });
+
+    /* =========================================
+       OUVERTURE DES MINI-JEUX
+    ========================================= */
+
+    function openGame(gameName) {
+      showPage("jeux");
+
+      document.querySelectorAll(".game-area").forEach(area => {
+        area.hidden = true;
+      });
+
+      const area = document.getElementById("game-" + gameName);
+
+      if (area) {
+        area.hidden = false;
+        area.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    document.querySelectorAll("[data-game]").forEach(button => {
+      button.addEventListener("click", () => {
+        openGame(button.dataset.game);
+      });
+    });
+
+    document.getElementById("refreshLeaderboard").addEventListener(
+      "click", refreshLeaderboard
+    );
+
+    /* =========================================
+       JEU 1 — NOMBRE DU DRAGON
+    ========================================= */
+
+    let dragonSecret = randomInt(1, 100);
+    let dragonRemaining = 10;
+    let dragonFinished = false;
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function resetDragon() {
+      dragonSecret = randomInt(1, 100);
+      dragonRemaining = 10;
+      dragonFinished = false;
+
+      document.getElementById("dragonGuess").value = "";
+      document.getElementById("dragonResult").textContent =
+        "Le dragon attend ta réponse...";
+      document.getElementById("dragonAttempts").textContent =
+        "Essais restants : 10";
+      document.getElementById("dragonTry").disabled = false;
+    }
+
+    document.getElementById("dragonTry").addEventListener("click", () => {
+      if (dragonFinished) return;
+
+      const input = document.getElementById("dragonGuess");
+      const guess = Number(input.value);
+      const result = document.getElementById("dragonResult");
+
+      if (!input.value || !Number.isInteger(guess) || guess < 1 || guess > 100) {
+        result.textContent = "Entre un nombre entier entre 1 et 100.";
+        return;
+      }
+
+      dragonRemaining--;
+
+      if (guess === dragonSecret) {
+        dragonFinished = true;
+        result.textContent = "🐉 Bravo ! Tu as trouvé le nombre secret.";
+        document.getElementById("dragonTry").disabled = true;
+
+        const points = Math.max(10, dragonRemaining * 5 + 10);
+        finishGame("Nombre du dragon", points);
+
+      } else if (dragonRemaining <= 0) {
+        dragonFinished = true;
+        result.textContent = "Le dragon a gagné ! Le nombre était " + dragonSecret + ".";
+        document.getElementById("dragonTry").disabled = true;
+        finishGame("Nombre du dragon", 0);
+
+      } else {
+        result.textContent = guess < dragonSecret
+          ? "🔥 Plus grand ! Le nombre du dragon est supérieur."
+          : "❄ Plus petit ! Le nombre du dragon est inférieur.";
+      }
+
+      document.getElementById("dragonAttempts").textContent =
+        "Essais restants : " + dragonRemaining;
+
+      input.value = "";
+      input.focus();
+    });
+
+    document.getElementById("dragonGuess").addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        document.getElementById("dragonTry").click();
+      }
+    });
+
+    document.getElementById("dragonRestart").addEventListener("click", resetDragon);
+
+    /* =========================================
+       JEU 2 — DESSIN DES RUNES
+    ========================================= */
+
+    const runeCanvas = document.getElementById("runeCanvas");
+    const runeCtx = runeCanvas.getContext("2d");
+
+    const runeList = [
+      {
+        symbol: "ᚱ",
+        name: "Raidho",
+        description: "Un trait vertical, deux diagonales vers la droite.",
+        lines: [
+          [0.35, 0.15, 0.35, 0.85],
+          [0.35, 0.20, 0.68, 0.35],
+          [0.68, 0.35, 0.35, 0.50]
+        ]
+      },
+      {
+        symbol: "ᛉ",
+        name: "Algiz",
+        description: "Un trait vertical avec deux branches en hauteur.",
+        lines: [
+          [0.50, 0.18, 0.50, 0.86],
+          [0.50, 0.48, 0.24, 0.20],
+          [0.50, 0.48, 0.76, 0.20]
+        ]
+      },
+      {
+        symbol: "ᚷ",
+        name: "Gebo",
+        description: "Deux diagonales qui se croisent.",
+        lines: [
+          [0.25, 0.20, 0.75, 0.80],
+          [0.75, 0.20, 0.25, 0.80]
+        ]
+      },
+      {
+        symbol: "ᛏ",
+        name: "Tiwaz",
+        description: "Un trait vertical surmonté d'une pointe triangulaire.",
+        lines: [
+          [0.50, 0.20, 0.50, 0.85],
+          [0.22, 0.43, 0.50, 0.18],
+          [0.50, 0.18, 0.78, 0.43]
+        ]
+      },
+      {
+        symbol: "ᚠ",
+        name: "Fehu",
+        description: "Un trait vertical et deux branches vers la droite.",
+        lines: [
+          [0.35, 0.15, 0.35, 0.85],
+          [0.35, 0.22, 0.72, 0.35],
+          [0.35, 0.45, 0.64, 0.56]
+        ]
+      }
+    ];
+
+    let currentRune = 0;
+    let drawing = false;
+    let runeHasBeenChecked = false;
+    let runeHasWon = false;
+    let runePoints = [];
+    let runeStrokeCount = 0;
+
+    function canvasPoint(event) {
+      const rect = runeCanvas.getBoundingClientRect();
+
+      return {
+        x: (event.clientX - rect.left) * runeCanvas.width / rect.width,
+        y: (event.clientY - rect.top) * runeCanvas.height / rect.height
+      };
+    }
+
+    function drawRuneBackground() {
+      runeCtx.clearRect(0, 0, runeCanvas.width, runeCanvas.height);
+
+      runeCtx.strokeStyle = "rgba(120, 160, 210, 0.12)";
+      runeCtx.lineWidth = 1;
+
+      for (let x = 25; x < runeCanvas.width; x += 25) {
+        runeCtx.beginPath();
+        runeCtx.moveTo(x, 0);
+        runeCtx.lineTo(x, runeCanvas.height);
+        runeCtx.stroke();
+      }
+
+      for (let y = 25; y < runeCanvas.height; y += 25) {
+        runeCtx.beginPath();
+        runeCtx.moveTo(0, y);
+        runeCtx.lineTo(runeCanvas.width, y);
+        runeCtx.stroke();
+      }
+
+      runeCtx.strokeStyle = "rgba(232, 189, 105, 0.12)";
+      runeCtx.beginPath();
+      runeCtx.moveTo(runeCanvas.width / 2, 0);
+      runeCtx.lineTo(runeCanvas.width / 2, runeCanvas.height);
+      runeCtx.stroke();
+    }
+
+    function clearRune() {
+      drawing = false;
+      runeHasBeenChecked = false;
+      runeHasWon = false;
+      runePoints = [];
+      runeStrokeCount = 0;
+
+      drawRuneBackground();
+
+      document.getElementById("runeResult").textContent =
+        "À toi de jouer, apprenti mage.";
+    }
+
+    function setRune(index) {
+      currentRune = (index + runeList.length) % runeList.length;
+
+      document.getElementById("runeTarget").textContent =
+        runeList[currentRune].symbol;
+
+      document.getElementById("runeDescription").textContent =
+        runeList[currentRune].description;
+
+      clearRune();
+    }
+
+    function drawStrokeSegment(from, to) {
+      runeCtx.strokeStyle = "#ffe2a0";
+      runeCtx.lineWidth = 5;
+      runeCtx.lineCap = "round";
+      runeCtx.lineJoin = "round";
+      runeCtx.shadowColor = "#66c9ff";
+      runeCtx.shadowBlur = 8;
+
+      runeCtx.beginPath();
+      runeCtx.moveTo(from.x, from.y);
+      runeCtx.lineTo(to.x, to.y);
+      runeCtx.stroke();
+
+      runeCtx.shadowBlur = 0;
+    }
+
+    runeCanvas.addEventListener("pointerdown", event => {
+      if (runeHasWon) return;
+
+      event.preventDefault();
+      drawing = true;
+      runeStrokeCount++;
+
+      const point = canvasPoint(event);
+      runePoints.push(point);
+
+      runeCtx.fillStyle = "#ffe2a0";
+      runeCtx.beginPath();
+      runeCtx.arc(point.x, point.y, 3, 0, Math.PI * 2);
+      runeCtx.fill();
+
+      try {
+        runeCanvas.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Le dessin reste possible si la capture n'est pas disponible.
+      }
+    });
+
+    runeCanvas.addEventListener("pointermove", event => {
+      if (!drawing || runeHasWon) return;
+
+      event.preventDefault();
+
+      const point = canvasPoint(event);
+      const previous = runePoints[runePoints.length - 1];
+
+      if (previous) {
+        drawStrokeSegment(previous, point);
+      }
+
+      runePoints.push(point);
+    });
+
+    function stopRuneDrawing() {
+      drawing = false;
+    }
+
+    runeCanvas.addEventListener("pointerup", stopRuneDrawing);
+    runeCanvas.addEventListener("pointercancel", stopRuneDrawing);
+    runeCanvas.addEventListener("lostpointercapture", stopRuneDrawing);
+
+    function pointToSegmentDistance(point, line) {
+      const vx = line.x2 - line.x1;
+      const vy = line.y2 - line.y1;
+      const lengthSquared = vx * vx + vy * vy;
+
+      if (lengthSquared === 0) {
+        return Math.hypot(point.x - line.x1, point.y - line.y1);
+      }
+
+      const t = Math.max(0, Math.min(1,
+        ((point.x - line.x1) * vx + (point.y - line.y1) * vy) /
+        lengthSquared
+      ));
+
+      const x = line.x1 + t * vx;
+      const y = line.y1 + t * vy;
+
+      return Math.hypot(point.x - x, point.y - y);
+    }
+
+    document.getElementById("runeCheck").addEventListener("click", () => {
+      if (runeHasWon) {
+        document.getElementById("runeResult").textContent =
+          "Rune déjà maîtrisée ! Passe à la suivante.";
+        return;
+      }
+
+      if (runePoints.length < 8) {
+        document.getElementById("runeResult").textContent =
+          "Trace d'abord la rune sur le tableau.";
+        return;
+      }
+
+      const rune = runeList[currentRune];
+
+      const normalizedLines = rune.lines.map(line => ({
+        x1: line[0] * runeCanvas.width,
+        y1: line[1] * runeCanvas.height,
+        x2: line[2] * runeCanvas.width,
+        y2: line[3] * runeCanvas.height
+      }));
+
+      // Vérifie que les principaux segments de la rune ont été approchés.
+      const matchedLines = normalizedLines.filter(line => {
+        const sampleCount = 9;
+        let closeSamples = 0;
+
+        for (let i = 0; i < sampleCount; i++) {
+          const t = i / (sampleCount - 1);
+
+          const sample = {
+            x: line.x1 + (line.x2 - line.x1) * t,
+            y: line.y1 + (line.y2 - line.y1) * t
+          };
+
+          const close = runePoints.some(point =>
+            pointToSegmentDistance(point, line) < 23
+          );
+
+          if (close) closeSamples++;
+        }
+
+        return closeSamples >= Math.ceil(sampleCount * 0.55);
+      });
+
+      const score = Math.round(
+        (matchedLines.length / normalizedLines.length) * 100
+      );
+
+      if (score >= 65) {
+        runeHasWon = true;
+        runeHasBeenChecked = true;
+
+        data.runesMastered++;
+        saveData();
+        refreshUI();
+
+        document.getElementById("runeResult").textContent =
+          "✨ Rune maîtrisée ! Précision estimée : " + score + " %.";
+
+        finishGame("Cercle des runes", 50);
+
+      } else {
+        runeHasBeenChecked = true;
+        document.getElementById("runeResult").textContent =
+          "Précision estimée : " + score +
+          " %. Essaie de mieux suivre les traits de la rune.";
+      }
+    });
+
+    document.getElementById("runeClear").addEventListener("click", clearRune);
+
+    document.getElementById("runeNext").addEventListener("click", () => {
+      setRune(currentRune + 1);
+    });
+
+    setRune(0);
+
+    /* =========================================
+       JEU 3 — DES DU DESTIN
+    ========================================= */
+
+    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+    document.getElementById("diceRoll").addEventListener("click", () => {
+      const first = randomInt(1, 6);
+      const second = randomInt(1, 6);
+      const total = first + second;
+
+      document.getElementById("diceDisplay").textContent =
+        diceFaces[first - 1] + "　" + diceFaces[second - 1];
+
+      let points = 5;
+
+      if (total >= 10) points = 25;
+      else if (total >= 7) points = 15;
+
+      if (total === 12) points = 40;
+
+      document.getElementById("diceResult").textContent =
+        "Résultat : " + first + " + " + second + " = " + total +
+        ". Tu gagnes " + points + " points !";
+
+      finishGame("Dés du destin", points);
+    });
+
+    /* =========================================
+       JEU 4 — MEMOIRE DU MAGE
+    ========================================= */
+
+    const memorySymbols = ["🔥", "❄️", "⚡", "🌿", "🌙", "💎", "🌀", "⭐"];
+
+    let memorySequence = [];
+    let memoryPosition = 0;
+    let memoryLevel = 1;
+    let memoryBusy = false;
+    let memoryGameOver = false;
+    let memoryTimeouts = [];
+
+    const memoryTiles = Array.from(
+      document.querySelectorAll(".memory-tile")
+    );
+
+    function clearMemoryTimers() {
+      memoryTimeouts.forEach(id => clearTimeout(id));
+      memoryTimeouts = [];
+    }
+
+    function memoryDelay(callback, delay) {
+      const id = setTimeout(callback, delay);
+      memoryTimeouts.push(id);
+      return id;
+    }
+
+    function setMemoryButtons(disabled) {
+      memoryTiles.forEach(button => {
+        button.disabled = disabled;
+      });
+    }
+
+    function showMemorySymbol(index, duration = 450) {
+      memoryTiles[index].textContent = memorySymbols[index];
+
+      memoryDelay(() => {
+        if (!memoryGameOver) {
+          memoryTiles[index].textContent = "?";
+        }
+      }, duration);
+    }
+
+    function playMemorySequence() {
+      memoryBusy = true;
+      memoryPosition = 0;
+      setMemoryButtons(true);
+
+      document.getElementById("memoryInstructions").textContent =
+        "Observe bien la séquence, elle va apparaître symbole par symbole.";
+
+      let index = 0;
+
+      function showNext() {
+        if (memoryGameOver) return;
+
+        if (index >= memorySequence.length) {
+          memoryBusy = false;
+          setMemoryButtons(false);
+
+          document.getElementById("memoryInstructions").textContent =
+            "À toi ! Reproduis la séquence dans le bon ordre.";
+          return;
+        }
+
+        const symbol = memorySequence[index];
+        showMemorySymbol(symbol, 550);
+        index++;
+
+        memoryDelay(showNext, 780);
+      }
+
+      memoryDelay(showNext, 450);
+    }
+
+    function startMemoryGame() {
+      clearMemoryTimers();
+
+      memorySequence = [];
+      memoryPosition = 0;
+      memoryLevel = 1;
+      memoryBusy = false;
+      memoryGameOver = false;
+
+      memoryTiles.forEach(button => {
+        button.textContent = "?";
+        button.disabled = true;
+      });
+
+      document.getElementById("memoryResult").textContent =
+        "Mémorise la suite pour gagner des points.";
+
+      for (let i = 0; i < 3; i++) {
+        memorySequence.push(randomInt(0, memorySymbols.length - 1));
+      }
+
+      playMemorySequence();
+    }
+
+    memoryTiles.forEach(button => {
+      button.addEventListener("click", () => {
+        if (memoryBusy || memoryGameOver) return;
+
+        const selected = Number(button.dataset.index);
+        button.textContent = memorySymbols[selected];
+
+        memoryDelay(() => {
+          if (!memoryGameOver) button.textContent = "?";
+        }, 350);
+
+        if (selected !== memorySequence[memoryPosition]) {
+          memoryGameOver = true;
+          memoryBusy = true;
+          setMemoryButtons(true);
+
+          const points = Math.max(0, (memoryLevel - 1) * 15);
+
+          document.getElementById("memoryInstructions").textContent =
+            "La séquence était incorrecte. Recommence pour faire mieux.";
+
+          document.getElementById("memoryResult").textContent =
+            "Fin de partie : niveau " + memoryLevel +
+            ". Tu gagnes " + points + " points.";
+
+          finishGame("Mémoire du mage", points);
+          return;
+        }
+
+        memoryPosition++;
+
+        if (memoryPosition >= memorySequence.length) {
+          memoryBusy = true;
+          setMemoryButtons(true);
+
+          const points = memoryLevel * 15;
+
+          document.getElementById("memoryResult").textContent =
+            "Bien joué ! Niveau " + memoryLevel + " réussi : +" +
+            points + " points.";
+
+          memoryLevel++;
+
+          memoryDelay(() => {
+            if (memoryGameOver) return;
+
+            memorySequence.push(
+              randomInt(0, memorySymbols.length - 1)
+            );
+
+            playMemorySequence();
+          }, 850);
+        }
+      });
+    });
+
+    document.getElementById("memoryStart").addEventListener(
+      "click", startMemoryGame
+    );
+
+    /* =========================================
+       JEU 5 — REFLEXES
+    ========================================= */
+
+    let reactionState = "idle";
+    let reactionTimer = null;
+    let reactionStartedAt = 0;
+
+    const reactionStart = document.getElementById("reactionStart");
+    const reactionHit = document.getElementById("reactionHit");
+    const reactionDisplay = document.getElementById("reactionDisplay");
+    const reactionResult = document.getElementById("reactionResult");
+
+    function resetReaction() {
+      clearTimeout(reactionTimer);
+      reactionState = "idle";
+      reactionStart.disabled = false;
+      reactionHit.disabled = true;
+      reactionHit.textContent = "J'attends le signal...";
+      reactionDisplay.textContent = "⚡";
+      reactionResult.textContent = "Es-tu prêt ?";
+    }
+
+    reactionStart.addEventListener("click", () => {
+      clearTimeout(reactionTimer);
+      reactionState = "waiting";
+
+      reactionStart.disabled = true;
+      reactionHit.disabled = false;
+      reactionHit.textContent = "Trop tôt ? Clique ici !";
+
+      reactionDisplay.textContent = "⏳";
+      reactionResult.textContent = "Concentre-toi... attends le signal vert !";
+
+      const delay = randomInt(1500, 4500);
+
+      reactionTimer = setTimeout(() => {
+        if (reactionState !== "waiting") return;
+
+        reactionState = "ready";
+        reactionStartedAt = performance.now();
+
+        reactionDisplay.textContent = "🟢";
+        reactionResult.textContent = "MAINTENANT ! Clique vite !";
+        reactionHit.textContent = "ÉCLAIR !";
+      }, delay);
+    });
+
+    reactionHit.addEventListener("click", () => {
+      if (reactionState === "waiting") {
+        clearTimeout(reactionTimer);
+        reactionState = "idle";
+
+        reactionStart.disabled = false;
+        reactionHit.disabled = true;
+        reactionDisplay.textContent = "🔴";
+        reactionResult.textContent =
+          "Faux départ ! Tu as cliqué avant le signal. Essaie encore.";
+
+        finishGame("Éclair du sorcier", 0);
+        return;
+      }
+
+      if (reactionState !== "ready") return;
+
+      const elapsed = Math.round(performance.now() - reactionStartedAt);
+      reactionState = "done";
+
+      reactionStart.disabled = false;
+      reactionHit.disabled = true;
+      reactionDisplay.textContent = "⚡";
+
+      let points = 0;
+
+      if (elapsed < 250) points = 100;
+      else if (elapsed < 350) points = 75;
+      else if (elapsed < 500) points = 50;
+      else if (elapsed < 700) points = 25;
+      else points = 10;
+
+      reactionResult.textContent =
+        elapsed + " ms ! Tu gagnes " + points + " points.";
+
+      finishGame("Éclair du sorcier", points);
+    });
+
+    /* =========================================
+       JEU 6 — COFFRES PERDUS
+    ========================================= */
+
+    let chestTreasure = randomInt(0, 2);
+    let chestAttempts = 3;
+    let chestFinished = false;
+
+    const chestButtons = Array.from(
+      document.querySelectorAll(".chest-btn")
+    );
+
+    function resetChests() {
+      chestTreasure = randomInt(0, 2);
+      chestAttempts = 3;
+      chestFinished = false;
+
+      chestButtons.forEach(button => {
+        button.textContent = "📦";
+        button.disabled = false;
+      });
+
+      document.getElementById("chestResult").textContent =
+        "Choisis ton premier coffre. Il te reste trois essais.";
+    }
+
+    chestButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        if (chestFinished || button.disabled) return;
+
+        const choice = Number(button.dataset.chest);
+        button.disabled = true;
+        chestAttempts--;
+
+        if (choice === chestTreasure) {
+          chestFinished = true;
+          button.textContent = "💎";
+
+          chestButtons.forEach((other, index) => {
+            other.disabled = true;
+            if (index === chestTreasure) other.textContent = "💎";
+          });
+
+          const points = chestAttempts >= 2 ? 30 :
+                         chestAttempts === 1 ? 20 : 10;
+
+          document.getElementById("chestResult").textContent =
+            "Trésor trouvé ! Tu remportes " + points + " points.";
+
+          finishGame("Coffres perdus", points);
+
+        } else if (chestAttempts <= 0) {
+          chestFinished = true;
+
+          chestButtons.forEach((other, index) => {
+            other.disabled = true;
+            if (index === chestTreasure) other.textContent = "💎";
+            else if (index === choice) other.textContent = "🪨";
+          });
+
+          document.getElementById("chestResult").textContent =
+            "Les coffres sont épuisés. Le trésor était ailleurs !";
+
+          finishGame("Coffres perdus", 0);
+
+        } else {
+          button.textContent = "🪨";
+          document.getElementById("chestResult").textContent =
+            "Pas de trésor ici ! Il te reste " + chestAttempts + " essai(s).";
+        }
+      });
+    });
+
+    document.getElementById("chestRestart").addEventListener(
+      "click", resetChests
+    );
+
+    /* =========================================
+       PROFIL
+    ========================================= */
+
+    document.getElementById("profileForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const name = document.getElementById("profileNameInput").value.trim();
+      const avatar = document.getElementById("profileAvatarInput").value;
+      const className = document.getElementById("profileClassInput").value;
+
+      if (!name) {
+        notify("Choisis un pseudo avant d'enregistrer.");
+        return;
+      }
+
+      const oldName = data.profile.name;
+
+      if (oldName !== name) {
+        const existing = data.leaderboard.find(entry => entry.name === name);
+        const previous = data.leaderboard.find(entry => entry.name === oldName);
+
+        if (previous) {
+          if (existing && existing !== previous) {
+            existing.points += previous.points;
+            existing.games += previous.games;
+            data.leaderboard = data.leaderboard.filter(
+              entry => entry !== previous
+            );
+          } else {
+            previous.name = name;
+          }
+        }
+      }
+
+      data.profile = { name, avatar, className };
+
+      saveData();
+      refreshUI();
+      notify("Profil enregistré !");
+    });
+
+    /* =========================================
+       EXPORT DE LA SAUVEGARDE
+    ========================================= */
+
+    document.getElementById("exportSave").addEventListener("click", () => {
+      const content = JSON.stringify(data, null, 2);
+      const blob = new Blob([content], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "friedonnia-sauvegarde.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      notify("Sauvegarde exportée !");
+    });
+
+    /* =========================================
+       IMPORT DE LA SAUVEGARDE
+    ========================================= */
+
+    const importSaveButton = document.getElementById("importSaveButton");
+    const importSaveFile = document.getElementById("importSaveFile");
+
+    importSaveButton.addEventListener("click", () => {
+      importSaveFile.click();
+    });
+
+    importSaveFile.addEventListener("change", async () => {
+      const file = importSaveFile.files[0];
+
+      if (!file) return;
+
+      try {
+        const textContent = await file.text();
+        const imported = JSON.parse(textContent);
+
+        if (
+          !imported ||
+          typeof imported !== "object" ||
+          !imported.profile ||
+          !Array.isArray(imported.leaderboard)
+        ) {
+          throw new Error("Format de sauvegarde incorrect.");
+        }
+
+        const newData = cloneDefaultData();
+
+        newData.profile = {
+          name: String(imported.profile.name || "Aventurier").slice(0, 20),
+          avatar: String(imported.profile.avatar || "🐉"),
+          className: String(imported.profile.className || "Mage")
+        };
+
+        newData.totalPoints = Math.max(
+          0, Number(imported.totalPoints) || 0
+        );
+
+        newData.gamesPlayed = Math.max(
+          0, Number(imported.gamesPlayed) || 0
+        );
+
+        newData.runesMastered = Math.max(
+          0, Number(imported.runesMastered) || 0
+        );
+
+        if (
+          imported.bestScores &&
+          typeof imported.bestScores === "object"
+        ) {
+          newData.bestScores = imported.bestScores;
+        }
+
+        newData.leaderboard = imported.leaderboard
+          .filter(entry =>
+            entry &&
+            typeof entry.name === "string" &&
+            Number.isFinite(Number(entry.points))
+          )
+          .map(entry => ({
+            name: entry.name.slice(0, 20),
+            points: Math.max(0, Number(entry.points) || 0),
+            games: Math.max(0, Number(entry.games) || 0)
+          }));
+
+        data = newData;
+        saveData();
+        refreshUI();
+        notify("Sauvegarde importée avec succès !");
+
+      } catch (error) {
+        notify("Fichier invalide : impossible d'importer cette sauvegarde.");
+      }
+
+      importSaveFile.value = "";
+    });
+
+    /* =========================================
+       REINITIALISATION DES DONNEES
+    ========================================= */
+
+    document.getElementById("resetData").addEventListener("click", () => {
+      const confirmed = confirm(
+        "Veux-tu vraiment effacer ton profil, tes points et tes scores sur cet appareil ? Cette action est définitive si tu n'as pas exporté de sauvegarde."
+      );
+
+      if (!confirmed) return;
+
+      data = cloneDefaultData();
+      saveData();
+      refreshUI();
+
+      resetDragon();
+      clearRune();
+      resetReaction();
+      resetChests();
+      clearMemoryTimers();
+
+      memorySequence = [];
+      memoryPosition = 0;
+      memoryLevel = 1;
+      memoryBusy = false;
+      memoryGameOver = false;
+      setMemoryButtons(true);
+      memoryTiles.forEach(button => button.textContent = "?");
+
+      document.getElementById("memoryResult").textContent = "";
+      document.getElementById("memoryInstructions").textContent =
+        "Clique sur Commencer. Observe la séquence, puis reproduis-la.";
+
+      notify("Toutes les données locales ont été réinitialisées.");
+    });
+
+    /* =========================================
+       INITIALISATION
+    ========================================= */
+
+    refreshUI();
+    resetDragon();
+    resetChests();
+    resetReaction();
+  </script>
+</body>
+</html>
